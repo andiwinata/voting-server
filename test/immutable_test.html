@@ -1,0 +1,23 @@
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.1/immutable.min.js"></script>
+<script>
+    let $ = Immutable;
+    let testObj1 = { "test1": "test1value" };
+    let testObj2 = { "test2": "test2value" };
+    let testObj3 = { "test3": "test3value" };
+
+    let map1 = $.Map({ a: testObj1, b: $.List([testObj2, "halo", "hello"]) });
+    let map2 = map1.set('b',
+        map1.get('b').push("lol")
+    );
+
+    map1.get('a').hello = "test";
+    console.log(map2.get('a').hello === "test"); // must be true
+
+</script>
+
+<body>
+    <h1>This is a test for immutable js</h1>
+</body>
+
+</html>
