@@ -1,5 +1,7 @@
 import { List, Map } from 'immutable'
 
+export const INITIAL_STATE = Map();
+
 function getWinners(vote) {
     if (!vote) return [];
     const [a, b] = vote.get('pair');
@@ -31,10 +33,10 @@ export function next(state) {
 
 }
 
-export function vote(state, entry) {
+export function vote(voteState, entry) {
     // https://facebook.github.io/immutable-js/docs/#/Map/updateIn
-    return state.updateIn(
-        ['vote', 'tally', entry],
+    return voteState.updateIn(
+        ['tally', entry],
         0,
         tally => tally + 1
     );
