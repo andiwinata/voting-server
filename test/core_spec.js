@@ -132,6 +132,18 @@ describe('application logic', () => {
             }));
         });
 
+        it('ignores vote for invalid entry', () => {
+            const state = Map({
+                pair: List.of('Trainspotting', '28 Days Later')
+            });
+
+            const nextState = vote(state);
+
+            expect(nextState).to.equal(Map({
+                pair: List.of('Trainspotting', '28 Days Later')
+            }));
+        });
+
     });
 
 });

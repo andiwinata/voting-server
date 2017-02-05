@@ -35,9 +35,15 @@ export function next(state) {
 
 export function vote(voteState, entry) {
     // https://facebook.github.io/immutable-js/docs/#/Map/updateIn
-    return voteState.updateIn(
-        ['tally', entry],
-        0,
-        tally => tally + 1
-    );
+    // discard invalid entry
+    if (voteState.get('pair').includes(entry)) {
+        return voteState.updateIn(
+            ['tally', entry],
+            0,
+            tally => tally + 1
+        );
+    } else {
+        return voteState;
+    }
+
 }
