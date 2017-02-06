@@ -33,17 +33,34 @@ export function next(state) {
 
 }
 
-export function vote(voteState, entry) {
-    // https://facebook.github.io/immutable-js/docs/#/Map/updateIn
-    // discard invalid entry
-    if (voteState.get('pair').includes(entry)) {
-        return voteState.updateIn(
-            ['tally', entry],
-            0,
-            tally => tally + 1
-        );
+function removeVote(voteState, clientId) {
+    const prevVote = voteState.getIn(['votes', clientId]);
+
+    if (prevVote) {
+        // remove previous vote if exists
+        return voteState
+            .updateIn(['tally', prevVote], tally => tally - 1)
+            .removeIn(['votes', clientId]);
     } else {
         return voteState;
     }
+}
 
+function addVote(voteState, entry, clientId) {
+    if (voteState.get('pair').includes(entry)) {
+        // update tally and also update voters list
+        return voteState
+            .updateIn(['tally', entry], 0, tally => tally + 1)
+            .setIn(['votes', clientId], entry);
+    } else {
+        return voteState;
+    }
+}
+
+export function vote(voteState, entry, clientId) {
+    return addVote(
+        removeVote(voteState, clientId),
+        entry,
+        clientId
+    );
 }
