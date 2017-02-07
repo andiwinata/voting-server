@@ -1,4 +1,4 @@
-import { setEntries, next, vote, INITIAL_STATE } from './core';
+import { setEntries, next, vote, resetVoting, INITIAL_STATE } from './core';
 
 export default function reducer(state = INITIAL_STATE, action) {
     // TODO CHECK ACTION META! or server side validation
@@ -11,6 +11,8 @@ export default function reducer(state = INITIAL_STATE, action) {
         case 'VOTE':
             return state.update('vote',
                 voteState => vote(voteState, action.entry, action.clientId));
+        case 'RESET_VOTING':
+            return resetVoting(state);
     }
     return state;
 }

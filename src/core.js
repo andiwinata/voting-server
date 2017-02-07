@@ -64,3 +64,9 @@ export function vote(voteState, entry, clientId) {
         clientId
     );
 }
+
+export function resetVoting(voteState, clientId) {
+    const entries = require('../entries.json');
+    const newState = setEntries(new Map(), entries);
+    return next(newState);
+}
