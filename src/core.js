@@ -26,7 +26,10 @@ export function next(state) {
             .set('winner', entries.first());
     } else {
         return state.merge({
-            vote: Map({ pair: entries.take(2) }),
+            vote: Map({ 
+                round: state.getIn(['vote', 'round'], 0) + 1,
+                pair: entries.take(2) 
+            }),
             entries: entries.skip(2)
         });
     }
@@ -67,6 +70,6 @@ export function vote(voteState, entry, clientId) {
 
 export function resetVoting(voteState, clientId) {
     const entries = require('../entries.json');
-    const newState = setEntries(new Map(), entries);
+    const newState = setEntries(new Map(), entries).remove('winner');
     return next(newState);
 }
