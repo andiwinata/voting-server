@@ -1,7 +1,7 @@
 import { List, Map } from 'immutable';
 import { expect } from 'chai';
 
-import { setEntries, next, vote } from '../src/core';
+import { setEntries, next, vote, resetVoting } from '../src/core';
 
 describe('application logic', () => {
 
@@ -174,6 +174,52 @@ describe('application logic', () => {
             }));
         });
 
+    });
+
+    describe('resetVoting', () => {
+        it('returns to initial entries and while vote in progress', () => {
+            const state = Map({
+                vote: Map({
+                    round: 100,
+                    pair: List.of('BigHero6', 'Zootopia')
+                }),
+                entries: List.of('Trolls', 'Lala Land')
+            });
+
+            const initialEntries = List.of(
+                'BigHero6', 'SantaClauze', 
+                'Zootopia', 'Kingdom',
+                'Trolls', 'Lala Land');
+            const nextState = resetVoting(state, initialEntries);
+
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    round: 1,
+                    pair: List.of('BigHero6', 'SantaClauze')
+                }),
+                entries: List.of('Zootopia', 'Kingdom', 'Trolls', 'Lala Land')
+            }));
+        });
+
+        it('returns to initial entries after vote finishes', () => {
+            const state = Map({
+                winner: 'Passenger'
+            });
+
+            const initialEntries = List.of(
+                'BigHero6', 'SantaClauze', 
+                'Zootopia', 'Kingdom',
+                'Trolls', 'Lala Land');
+            const nextState = resetVoting(state, initialEntries);
+
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    round: 1,
+                    pair: List.of('BigHero6', 'SantaClauze')
+                }),
+                entries: List.of('Zootopia', 'Kingdom', 'Trolls', 'Lala Land')
+            }));
+        });
     });
 
 });

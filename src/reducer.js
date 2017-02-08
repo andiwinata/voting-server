@@ -12,7 +12,8 @@ export default function reducer(state = INITIAL_STATE, action) {
             return state.update('vote',
                 voteState => vote(voteState, action.entry, action.clientId));
         case 'RESET_VOTING':
-            return resetVoting(state);
+            const initialEntries = require('../entries.json');
+            return resetVoting(state, initialEntries);
     }
     return state;
 }
